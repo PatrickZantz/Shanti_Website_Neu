@@ -22,6 +22,8 @@ Einstellungen im Cloudflare-Dashboard (Workers & Pages → Create → Connect to
 
 Jeder Push auf `main` löst automatisch einen Build und Deploy aus.
 
+Private Videos: siehe [VIDEOS.md](./VIDEOS.md).
+
 Lokaler Test: `npx wrangler deploy --dry-run`.
 
 ## Domain

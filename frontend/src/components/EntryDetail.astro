@@ -24,7 +24,7 @@ const structuredData = JSON.stringify({
   <h1>{entry.title}</h1>
   {description ? <p class="lead" style="margin: 14px 0 30px">{description}</p> : null}
   {image ? <div class="detail-art"><img src={image} alt="" style="position:absolute;inset:0;width:100%;height:100%" /></div> : null}
-  {entry.videoUrl ? <div style="margin: 28px 0"><VideoPlayer url={entry.videoUrl} title={entry.videoDescription || entry.title} /></div> : null}
+  {entry.videoFile || entry.videoUrl ? <div style="margin: 28px 0"><VideoPlayer url={entry.videoUrl} file={entry.videoFile} title={entry.videoDescription || entry.title} /></div> : null}
   <div class="prose-content"><Markdown>{entry.body}</Markdown></div>
   <script type="application/ld+json" set:html={structuredData} />
 </article></div>

@@ -22,6 +22,7 @@ export type Entry = {
   image?: string;
   coverImage?: string;
   videoUrl?: string;
+  videoFile?: string;
   thumbnail?: string;
   videoDuration?: string;
   videoDescription?: string;

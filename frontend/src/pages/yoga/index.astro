@@ -8,8 +8,8 @@ const filters = await getYogaFilters();
 const images = await getSiteImages();
 const collections = ['yoga', 'tools', 'routines', 'challenges', 'videos'] as const;
 const entries = (await Promise.all(collections.map(async (collection) => (await getEntries(collection)).flatMap((entry) => {
-  const isVideo = Boolean(entry.videoUrl);
-  return collection === 'yoga' || isVideo ? [{ entry, href: `/${collection}/${entry.slug}`, collection, isVideo }] : [];
+  const isVideo = Boolean(entry.videoUrl || entry.videoFile);
+  return collection === 'yoga' || isVideo ? [{ entry: isVideo ? { ...entry, videoUrl: undefined, videoFile: undefined, body: '' } : entry, href: `/${collection}/${entry.slug}`, collection, isVideo }] : [];
 })))).flat();
 const intro = await getIntro('yoga');
 ---
