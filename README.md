@@ -1,6 +1,6 @@
 # Shanti Yoga
 
-Statische Website auf Astro 5 mit React. Inhalte und Seiteneinstellungen liegen
+Statische Website auf Astro 7 mit React. Inhalte und Seiteneinstellungen liegen
 in `frontend/content`; das Frontend wird als statische Website gebaut.
 
 ## Entwicklung
@@ -15,13 +15,13 @@ npm run check
 npm run build
 ```
 
-Der Build liegt anschließend in `frontend/dist/`.
+Der Build liegt anschließend in `frontend/dist/`. Im Repo-Root baut `npm run build` das Frontend, `npx wrangler deploy` baut und lädt es zu Cloudflare hoch.
 
 Optional kann `PUBLIC_CONTACT_EMAIL` in `frontend/.env` gesetzt werden. Die
 Vorlage dazu liegt in `frontend/.env.example`.
 
 ## Deployment
 
-Deployment-Optionen und Cloudflare-Pages-Einstellungen stehen in
+Deployment-Einstellungen für Cloudflare, Kosten stehen in
 [deploy/README.md](./deploy/README.md). Projektstatus und offene Punkte stehen
 in [PLAN.md](./PLAN.md).

@@ -1,55 +1,59 @@
 # Deployment
 
-Die Website ist rein statisch und wird als `frontend/dist` ausgeliefert. Es gibt keinen Server-Prozess im Produktionsbetrieb.
+Die Website ist rein statisch (`frontend/dist`), es gibt keinen Server-Prozess.
+Sie läuft auf Cloudflare als Worker mit Static Assets.
 
-## Cloudflare Pages (empfohlen)
+## Cloudflare (aktuell)
 
-Der Astro-Build ist bereits für Cloudflare Pages vorbereitet. Die wichtigsten Einstellungen für das Pages-Projekt im Dashboard:
+Konfiguration: [`wrangler.jsonc`](../wrangler.jsonc) im Repo-Root. Der
+`build`-Eintrag ruft `npm run build` auf (Root-`package.json`), das in
+`frontend/` installiert und mit Astro baut. Danach lädt Wrangler
+`frontend/dist` hoch.
 
-1. In Cloudflare auf `Workers & Pages` → `Pages` → `Create` → `Connect to Git` gehen.
-2. Das GitHub-Repository `PatrickZantz/Shanti_Website_Neu` auswählen.
-3. Als Root-Verzeichnis `frontend` setzen.
-4. Build-Befehl: `npm run build`
-5. Output Directory: `dist`
-6. Build-Umgebung: `NODE_VERSION=22`
-7. Optional: `PUBLIC_CONTACT_EMAIL` setzen, z. B. `hello@deine-domain.de`.
-8. Produktion-Branch auf `main` setzen und das Projekt erstellen.
-9. Danach Domain an das Pages-Projekt anbinden.
+Einstellungen im Cloudflare-Dashboard (Workers & Pages → Create → Connect to Git):
 
-Wichtig: Cloudflare baut automatisch bei jedem Push auf `main`. Kein Node-Server, kein Docker und keine separate Laufzeit nötig.
+- Repository: `PatrickZantz/Shanti_Website_Neu`, Branch `main`
+- Root-Verzeichnis: leer
+- Build command: leer (übernimmt `wrangler.jsonc`) oder `npm run build`
+- Deploy command: `npx wrangler deploy`
+- Umgebungsvariablen: `NODE_VERSION=22` (zusätzlich liegt `.node-version` im Repo),
+  optional `PUBLIC_CONTACT_EMAIL=hello@deine-domain.de` (Vorlage:
+  `frontend/.env.example`)
 
-### Beispiel für die Umgebungsvariablen
+Jeder Push auf `main` löst automatisch einen Build und Deploy aus.
 
-```
-NODE_VERSION=22
-PUBLIC_CONTACT_EMAIL=hello@example.com
-```
+Lokaler Test: `npx wrangler deploy --dry-run`.
 
-Die Datei `frontend/.env.example` dient als Vorlage. Für das Live-Deployment sollte `PUBLIC_CONTACT_EMAIL` auf die echte E-Mail-Adresse der Website gesetzt werden.
+## Domain
 
-### Optional: Cloudflare CLI
+Domain bei Cloudflare Registrar registrieren (Preis ohne Aufschlag) oder
+bestehende Domain als Zone hinzufügen. Danach im Worker unter
+Settings → Domains & Routes die Custom Domain eintragen; DNS und TLS-Zertifikat
+richtet Cloudflare automatisch ein.
 
-Falls du das Projekt aus der Kommandozeile verwalten willst, ist das nach einem Cloudflare-Login möglich:
+## Kosten (Schätzung, Stand 2026, bitte beim Anbieter prüfen)
 
-```bash
-cd frontend
-npx wrangler pages project create shanti-yoga --production-branch main
-```
+| Posten | Kosten |
+|---|---|
+| Cloudflare Workers Static Assets (Hosting, TLS, CDN) | 0 €: statische Asset-Requests sind kostenlos und unbegrenzt |
+| Build/CI (Workers Builds, Free-Plan) | 0 € (begrenzt auf 3.000 Build-Minuten/Monat) |
+| Domain `.de` | ca. 6–10 € pro Jahr |
+| Domain `.com` (Cloudflare Registrar, Einkaufspreis) | ca. 10–11 $ pro Jahr |
+| E-Mail-Weiterleitung (Cloudflare Email Routing) | 0 € |
 
-Die tatsächliche Projekt-Erstellung auf Cloudflare selbst benötigt einen gültigen Cloudflare-Login oder ein API-Token.
+Gesamt: **ca. 6–11 € pro Jahr**, also unter 1 € pro Monat. Ein Upgrade auf
+Workers Paid (5 $/Monat) ist für diese Seite nicht nötig.
 
 ## Alternative: eigene VPS
-
-`npm run build` lokal oder in GitHub Actions ausführen und dann `frontend/dist/` per rsync auf die VPS kopieren:
 
 ```bash
 npm run build
 rsync -avz frontend/dist/ user@example.com:/srv/sites/shanti/
 ```
 
-Damit kann Caddy die statische Website ausliefern:
+Caddy liefert die statischen Dateien aus (TLS automatisch):
 
-```nginx
+```
 shanti.example {
   root * /srv/sites/shanti
   file_server
@@ -57,4 +61,4 @@ shanti.example {
 }
 ```
 
-Caddy übernimmt TLS automatisch. Es wird weder Docker noch Node auf der VPS benötigt.
+Kosten: VPS ab ca. 4 €/Monat zuzüglich Domain.

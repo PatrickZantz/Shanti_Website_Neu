@@ -7,7 +7,7 @@
 - Statische Astro-Website (Astro 7.3.8), derzeit 34 generierte Seiten.
 - Keine Mitglieder, kein Login und kein CMS. Diese Funktionen sind nicht Teil
   des aktuellen Neustarts.
-- Deployment-Ziel ist Cloudflare Pages; eine statische Auslieferung über einen
+- Deployment-Ziel ist Cloudflare (Workers Static Assets, `wrangler.jsonc`); eine statische Auslieferung über einen
   anderen Hoster bleibt möglich.
 - Der kritische Astro-Audit-Befund der übernommenen Version wurde durch das
   Upgrade behoben. Vier moderate Audit-Hinweise aus der Build-Abhängigkeit
@@ -19,7 +19,7 @@
       rechtlich prüfen.
 - [ ] `PUBLIC_CONTACT_EMAIL` auf die echte Kontaktadresse setzen und den
       Kontaktablauf testen.
-- [ ] Domain und Cloudflare-Pages-Projekt einrichten.
+- [ ] Domain registrieren und an das Cloudflare-Projekt anbinden.
 - [ ] Website auf Mobilgeräten, Formularverhalten, Links und Seitentitel prüfen.
 - [ ] Beispielvideos entfernen oder durch freigegebene Inhalte ersetzen.
 - [ ] Verbleibende moderate npm-Audit-Hinweise in der Frontmatter-Abhängigkeit
