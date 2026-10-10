@@ -1,5 +1,6 @@
 {
   "name": "shanti-website",
   "compatibility_date": "2026-10-01",
+  "build": { "command": "npm run build" },
   "assets": { "directory": "./frontend/dist" }
 }
