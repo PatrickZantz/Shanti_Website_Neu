@@ -25,25 +25,87 @@ Hinweis: Access greift nur auf der Custom Domain, nicht auf `*.workers.dev`.
 Auf `workers.dev` fehlt das JWT, `/media/*` liefert dort 403; die Videoseiten
 selbst wären dort ungeschützt erreichbar (ohne Video-Datei).
 
-## Video hinzufügen
+## Neues Video hinzufügen
+
+Ablauf: **1. MP4 nach R2 hochladen, 2. Dateinamen im Content eintragen, 3. pushen.**
+
+### 1. Upload nach R2
+
+**Dashboard (bis 300 MB pro Datei):**
+Cloudflare Dashboard → R2 Object Storage → Bucket `shanti-videos` → Objects →
+Upload → Datei wählen. Der Objektname ist der Dateiname (z. B. `morgen-flow.mp4`).
+
+**CLI (empfohlen, auch größere Dateien):**
 
 ```bash
-npx wrangler r2 object put shanti-videos/morgen-flow.mp4 --file ./morgen-flow.mp4 --content-type video/mp4 --remote
+npx wrangler login   # einmalig
+npx wrangler r2 object put shanti-videos/morgen-flow.mp4 \
+  --file ./morgen-flow.mp4 --content-type video/mp4 --remote
 ```
 
-(Dateien > 300 MiB über rclone/S3-API hochladen.) Dann in
-`frontend/content/videos/<name>.md` statt `videoUrl` setzen:
+Prüfen: `npx wrangler r2 object get shanti-videos/morgen-flow.mp4 --remote --file /dev/null`
+oder im Dashboard unter Objects. Dateien > 300 MiB gehen nicht über Wrangler,
+dafür rclone mit der R2-S3-API (Dashboard → R2 → Manage API tokens).
+
+Dateinamen: nur Kleinbuchstaben, Ziffern, `-`, `.`; keine Leerzeichen, keine
+Unterordner nötig (Unterordner wie `kurse/flow.mp4` gehen, der Pfad wird dann
+komplett als `videoFile` eingetragen). Format: MP4 (H.264/AAC), „faststart"
+(`ffmpeg -i in.mp4 -c copy -movflags +faststart out.mp4`), 720p–1080p.
+
+### 2. Dateiname im Projekt pflegen
+
+Die Dateinamen stehen im Frontmatter der Videoeinträge in
+`frontend/content/videos/<name>.md`, Feld `videoFile`:
 
 ```yaml
+---
+title: Morgen-Flow
+slug: morgen-flow
+description: Sanfter Start in den Tag.
+category: Video · Erde
+energyLevel: Niedrig
+elements: [Erde]
+videoDuration: 12 Min.
 videoFile: morgen-flow.mp4
+---
+
+Beschreibungstext (Markdown).
 ```
 
-Empfehlung: MP4 (H.264/AAC), „faststart", 720p–1080p.
+Für ein neues Video eine bestehende Datei kopieren, `slug`, Titel usw. anpassen,
+`videoUrl` entfernen und `videoFile` setzen. Der Dateiname muss exakt dem
+R2-Objektnamen entsprechen (Groß-/Kleinschreibung). Ein bestehendes Video
+ersetzen: gleiche Datei unter gleichem Namen erneut hochladen.
 
-## Nutzer freischalten / entziehen
+### 3. Veröffentlichen
 
-Zero Trust → Access → Applications → Policy → E-Mail hinzufügen oder entfernen.
-Aktive Sitzungen unter Users → Revoke beenden.
+`git add`, `git commit`, `git push` auf `main` → Cloudflare baut und deployt.
+Videos erscheinen sofort nach dem Deploy; der Upload allein macht noch nichts
+sichtbar. Die Videoseite zeigt nur Eingeloggten den Player.
+
+## Nutzer freischalten
+
+1. Cloudflare Dashboard → Zero Trust → Access → Applications → die
+   Shanti-Anwendung → Edit → Policies.
+2. Policy „Allow" öffnen → bei Include „Emails" die E-Mail-Adresse
+   hinzufügen (oder „Emails ending in" für eine ganze Domain) → Save.
+   Alternativ eine Access-Gruppe pflegen (Access → Access groups) und diese
+   in der Policy verwenden; dann ist nur die Gruppe zu ändern.
+3. Der Nutzer öffnet die Videoseite, gibt seine E-Mail ein und erhält einen
+   Einmalcode per Mail. Die Sitzung gilt so lange wie die eingestellte
+   Session Duration (Standard 24 h, anpassbar unter der Anwendung).
+
+Insgesamt maximal 50 Nutzer im Free-Plan (Zero Trust → Settings → Billing).
+
+## Nutzer entfernen
+
+1. Zero Trust → Access → Applications → Anwendung → Policies → „Allow" →
+   E-Mail-Adresse entfernen → Save (bzw. aus der Access-Gruppe löschen).
+2. Bestehende Sitzung sofort beenden: Zero Trust → Users (bzw. Access →
+   Users) → Nutzer wählen → „Revoke" / „Revoke all sessions". Ohne diesen
+   Schritt bleibt der Zugriff bis zum Ablauf der Session erhalten.
+3. Prüfen: In einem Privatfenster mit dieser Adresse anmelden; Zugriff muss
+   abgelehnt werden.
 
 ## Lokal testen
 
