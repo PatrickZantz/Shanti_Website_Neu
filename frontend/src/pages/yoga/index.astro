@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import { PracticeFinder } from '../../components/PracticeFinder';
+import { getEntries, getSiteImages, getYogaFilters, getIntro } from '../../lib/content';
+
+const filters = await getYogaFilters();
+const images = await getSiteImages();
+const collections = ['yoga', 'tools', 'routines', 'challenges', 'videos'] as const;
+const entries = (await Promise.all(collections.map(async (collection) => (await getEntries(collection)).flatMap((entry) => {
+  const isVideo = Boolean(entry.videoUrl);
+  return collection === 'yoga' || isVideo ? [{ entry, href: `/${collection}/${entry.slug}`, collection, isVideo }] : [];
+})))).flat();
+const intro = await getIntro('yoga');
+---
+<Base title={intro.metaTitle} description={intro.metaDescription}>
+  <div class="content-wrap">
+    <PageIntro eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead} />
+    <PracticeFinder client:load entries={entries} filters={filters} fallbackImage={images.fallbacks?.yoga} videoFallbackImage={images.fallbacks?.videos} />
+  </div>
+</Base>

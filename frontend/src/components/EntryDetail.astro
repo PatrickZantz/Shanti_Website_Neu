@@ -1,0 +1,30 @@
+---
+import { ArrowLeft } from 'lucide-react';
+import Markdown from './Markdown';
+import { VideoPlayer } from './VideoPlayer';
+import { getSiteSettings, type Entry } from '../lib/content';
+
+interface Props { entry: Entry; backHref: string }
+const { entry, backHref } = Astro.props;
+const { brand_name } = await getSiteSettings();
+const image = entry.coverImage || entry.image;
+const description = entry.description || entry.excerpt;
+const structuredData = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: entry.title,
+  description,
+  datePublished: entry.date,
+  author: entry.author ? { '@type': 'Person', name: entry.author } : undefined,
+}).replace(/</g, '\\u003c');
+---
+<div class="content-wrap"><article class="prose">
+  <a class="text-link" href={backHref}><ArrowLeft size={15} /> Zur Übersicht</a>
+  <p class="eyebrow" style="margin-top: 28px">{entry.category || entry.type || entry.elements?.[0] || brand_name}</p>
+  <h1>{entry.title}</h1>
+  {description ? <p class="lead" style="margin: 14px 0 30px">{description}</p> : null}
+  {image ? <div class="detail-art"><img src={image} alt="" style="position:absolute;inset:0;width:100%;height:100%" /></div> : null}
+  {entry.videoUrl ? <div style="margin: 28px 0"><VideoPlayer url={entry.videoUrl} title={entry.videoDescription || entry.title} /></div> : null}
+  <div class="prose-content"><Markdown>{entry.body}</Markdown></div>
+  <script type="application/ld+json" set:html={structuredData} />
+</article></div>

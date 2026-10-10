@@ -1,0 +1,10 @@
+{
+  "states": [
+    { "name": "Überstimuliert", "detail": "Zu viel Input, mein Kopf ist voll.", "image": "/images/art/state-ueberstimuliert.jpg" },
+    { "name": "Unruhig", "detail": "Innere Unruhe, ich kann nicht still sitzen.", "image": "/images/art/state-unruhig.jpg" },
+    { "name": "Gestresst", "detail": "Druck, Anspannung, alles ist zu viel.", "image": "/images/art/state-gestresst.jpg" },
+    { "name": "Emotional", "detail": "Ich fühle viel und brauche Raum.", "image": "/images/art/state-emotional.jpg" },
+    { "name": "Erschöpft", "detail": "Ich habe kaum Energie und bin müde.", "image": "/images/art/state-erschoepft.jpg" },
+    { "name": "Blockiert", "detail": "Ich fühle mich blockiert und komme nicht voran.", "image": "/images/art/state-festgefahren.jpg" }
+  ]
+}

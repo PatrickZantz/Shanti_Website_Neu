@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+import { ContentCard } from '../../components/ContentCard';
+import PageIntro from '../../components/PageIntro.astro';
+import { getEntries, getSiteImages, getIntro } from '../../lib/content';
+
+const entries = await getEntries('challenges');
+const fallback = (await getSiteImages()).fallbacks?.challenges;
+const intro = await getIntro('challenges');
+---
+<Base title={intro.metaTitle} description={intro.metaDescription}>
+  <div class="content-wrap">
+    <PageIntro eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead} />
+    <div class="grid grid-3">{entries.map((entry) => <ContentCard entry={entry} href={`/challenges/${entry.slug}`} fallbackImage={fallback} />)}</div>
+  </div>
+</Base>

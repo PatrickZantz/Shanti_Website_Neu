@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import { RoutineBrowser } from '../../components/RoutineBrowser';
+import { getEntries, getSiteImages, getIntro } from '../../lib/content';
+const intro = await getIntro('routines');
+---
+<Base title={intro.metaTitle} description={intro.metaDescription}>
+  <div class="content-wrap">
+    <PageIntro eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead} />
+    <RoutineBrowser client:load entries={await getEntries('routines')} fallbackImage={(await getSiteImages()).fallbacks?.routines} />
+  </div>
+</Base>

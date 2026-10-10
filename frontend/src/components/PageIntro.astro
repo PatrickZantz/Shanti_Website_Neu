@@ -1,0 +1,14 @@
+---
+import { getSiteImages, getSiteSettings } from '../lib/content';
+
+interface Props { eyebrow?: string; title: string; lead: string }
+const { eyebrow, title, lead } = Astro.props;
+const { ornament } = await getSiteImages();
+const { brand_name } = await getSiteSettings();
+---
+<div class="page-intro">
+  {ornament ? <img class="ornament" src={ornament} alt="" width={112} height={48} /> : null}
+  <p class="eyebrow">{eyebrow || brand_name}</p>
+  <h1>{title}</h1>
+  <p class="lead">{lead}</p>
+</div>

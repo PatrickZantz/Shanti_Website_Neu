@@ -1,0 +1,19 @@
+{
+  "brand_name": "SHANTI YOGA",
+  "tagline": "Deine Praxis.\nDein Raum.",
+  "site_name": "Shanti Yoga",
+  "description": "Sanfte Yoga-Praxis und Unterstützung für dein Nervensystem. In deinem Tempo, auf deine Weise.",
+  "rail_note": "Du bist hier richtig.\nIn deinem Tempo.",
+  "footer_text": "Shanti Yoga · Deine Praxis. Dein Raum.",
+  "hero": "/images/art/hero-meditation.jpg",
+  "ornament": "/images/art/ornament-sprig.jpg",
+  "rail_art": "/images/art/rail-art.jpg",
+  "band_vase": "/images/art/band-vase.jpg",
+  "band_leaves": "/images/art/band-leaves.jpg",
+  "fallback_yoga": "/images/art/challenge-yoga.jpg",
+  "fallback_tools": "/images/art/state-ueberstimuliert.jpg",
+  "fallback_routines": "/images/art/challenge-meditation.jpg",
+  "fallback_challenges": "/images/art/challenge-beginner.jpg",
+  "fallback_community": "/images/art/challenge-patanjali.jpg",
+  "fallback_videos": "/images/art/challenge-meditation.jpg"
+}

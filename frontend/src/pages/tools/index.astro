@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import { ToolSelector } from '../../components/ToolSelector';
+import { getEntries, getSiteImages, getToolStates, getIntro } from '../../lib/content';
+const intro = await getIntro('tools');
+---
+<Base title={intro.metaTitle} description={intro.metaDescription}>
+  <div class="content-wrap">
+    <PageIntro eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead} />
+    <ToolSelector client:load entries={await getEntries('tools')} states={await getToolStates()} bandImage={(await getSiteImages()).bandLeaves} />
+  </div>
+</Base>

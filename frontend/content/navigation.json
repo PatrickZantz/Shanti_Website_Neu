@@ -1,0 +1,14 @@
+[
+  { "placement": "rail", "sort": 1, "label": "Yoga", "note": "Finde eine passende Praxis", "href": "/yoga", "icon": "Flower2" },
+  { "placement": "rail", "sort": 2, "label": "Alltagshilfen", "note": "Kleine Hilfen für den Alltag", "href": "/tools", "icon": "Waves" },
+  { "placement": "rail", "sort": 3, "label": "Routinen", "note": "Kleine Pausen im Alltag", "href": "/routines", "icon": "CalendarDays" },
+  { "placement": "rail", "sort": 4, "label": "Übungen", "note": "In kleinen Schritten üben", "href": "/challenges", "icon": "Leaf" },
+  { "placement": "top", "sort": 1, "label": "Start", "href": "/", "icon": "House" },
+  { "placement": "top", "sort": 2, "label": "Praxis", "href": "/yoga", "icon": "Flower2", "opens_rail": true },
+  { "placement": "top", "sort": 3, "label": "Gemeinsam", "href": "/community", "icon": "UsersRound" },
+  { "placement": "top", "sort": 4, "label": "Atelier", "href": "/atelier", "icon": "Heart" },
+  { "placement": "footer", "sort": 1, "label": "Über uns", "href": "/about" },
+  { "placement": "footer", "sort": 2, "label": "Kontakt", "href": "/contact" },
+  { "placement": "footer", "sort": 3, "label": "Datenschutz", "href": "/privacy" },
+  { "placement": "footer", "sort": 4, "label": "Impressum", "href": "/imprint" }
+]

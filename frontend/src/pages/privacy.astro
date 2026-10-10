@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import CmsPage from '../components/CmsPage.astro';
+import { getEntry } from '../lib/content';
+
+const page = await getEntry('pages', 'privacy');
+if (!page) throw new Error('Seite "privacy" fehlt in content/pages');
+---
+<Base title={page.metaTitle} description={page.metaDescription}>
+  <CmsPage page={page} />
+</Base>

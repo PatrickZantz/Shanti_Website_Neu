@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import EntryDetail from '../../components/EntryDetail.astro';
+import { getEntries } from '../../lib/content';
+
+export async function getStaticPaths() {
+  return [...(await getEntries('blog')), ...(await getEntries('community'))].map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+<Base title={entry.title} description={entry.excerpt || entry.description}>
+  <EntryDetail entry={entry} backHref="/community" />
+</Base>

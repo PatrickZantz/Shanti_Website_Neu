@@ -1,0 +1,62 @@
+---
+import { ArrowRight, HeartHandshake } from 'lucide-react';
+import Base from '../layouts/Base.astro';
+import Markdown from '../components/Markdown';
+import { ContentCard } from '../components/ContentCard';
+import { getEntries, getEntry, getSiteImages, getToolStates } from '../lib/content';
+
+const images = await getSiteImages();
+const fallbacks = images.fallbacks ?? {};
+const states = (await getToolStates()).slice(0, 3);
+const practices = (await getEntries('yoga')).slice(0, 3);
+const routines = (await getEntries('routines')).slice(0, 3);
+const challenges = (await getEntries('challenges')).slice(0, 3);
+const articles = (await getEntries('blog')).slice(0, 3);
+const homepage = await getEntry('pages', 'homepage');
+---
+<Base title={homepage?.metaTitle} description={homepage?.metaDescription}>
+  <div class="content-wrap">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">EIN RAUM FÜR DICH</p>
+        <h1>{homepage?.title || 'Deine Praxis. Dein Raum.'}</h1>
+        <p class="lead">{homepage?.description || 'Yoga und Nervensystem-Unterstützung, die sich deinem Leben anpasst. Nicht andersherum.'}</p>
+        <a class="button" href="/yoga">Praxis finden <ArrowRight size={16} /></a>
+      </div>
+      <div class="hero-art" role="img" aria-label="Ruhige, naturinspirierte Yoga-Illustration">{images.hero ? <img src={images.hero} alt="" style="position:absolute;inset:0;width:100%;height:100%" /> : null}</div>
+    </section>
+
+    <section class="section soft-band">
+      <div><p class="eyebrow">OHNE DRUCK. OHNE RICHTIG ODER FALSCH.</p><h2>Du darfst bei dir anfangen.</h2><p>Sanfte Impulse für Tage, an denen du Halt, Bewegung oder einfach einen Moment Ruhe brauchst.</p>{homepage?.body ? <div class="prose"><Markdown>{homepage.body}</Markdown></div> : null}</div>
+      <HeartHandshake size={38} strokeWidth={1.2} aria-hidden="true" />
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><div><p class="eyebrow">IN DEINEM TEMPO</p><h2>Was passt heute zu dir?</h2><p>Finde eine kurze Praxis oder ein passendes Beispielvideo.</p></div><a class="text-link" href="/yoga">Praxis finden <ArrowRight size={15} /></a></div>
+      <div class="grid grid-3">{practices.map((entry) => <ContentCard entry={entry} href={`/yoga/${entry.slug}`} icon="clock" fallbackImage={fallbacks.yoga} />)}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><div><p class="eyebrow">KLEINE HILFEN FÜR DEN ALLTAG</p><h2>Was brauchst du gerade?</h2><p>Finde eine kleine Hilfe, die sich passend anfühlt.</p></div><a class="text-link" href="/tools">Alltagshilfen ansehen <ArrowRight size={15} /></a></div>
+      <div class="grid grid-3">{states.map(({ name, detail, image }) => <a class="option-tile state-tile" href="/tools">{image ? <img class="option-art" src={image} alt="" width={104} height={104} /> : null}<strong>{name}</strong><small>{detail}</small></a>)}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><div><p class="eyebrow">WIEDERKEHRENDE MOMENTE</p><h2>Routinen, die tragen</h2></div><a class="text-link" href="/routines">Alle Routinen <ArrowRight size={15} /></a></div>
+      <div class="grid grid-3">{routines.map((entry) => <ContentCard entry={entry} href={`/routines/${entry.slug}`} fallbackImage={fallbacks.routines} />)}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><div><p class="eyebrow">KLEINE SCHRITTE</p><h2>Dein Weg, nicht dein Soll</h2></div><a class="text-link" href="/challenges">Übungen ansehen <ArrowRight size={15} /></a></div>
+      <div class="grid grid-3">{challenges.map((entry) => <ContentCard entry={entry} href={`/challenges/${entry.slug}`} fallbackImage={fallbacks.challenges} />)}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><div><p class="eyebrow">GEDANKEN UND IMPULSE</p><h2>Zum Weiterlesen</h2></div><a class="text-link" href="/community">Alle Beiträge <ArrowRight size={15} /></a></div>
+      <div class="grid grid-3">{articles.map((entry) => <ContentCard entry={entry} href={`/community/${entry.slug}`} fallbackImage={fallbacks.community} />)}</div>
+    </section>
+
+    <section class="section soft-band"><div><p class="eyebrow">GEMEINSAM UND DOCH IM EIGENEN TEMPO</p><h2>Gedanken, Impulse, Verbindung.</h2><p>Artikel und Ressourcen rund um Yoga, Neurodivergenz und Nervensystem-Regulation.</p></div><a class="button secondary" href="/community">Community entdecken <ArrowRight size={16} /></a></section>
+    <section class="section" style="text-align: center"><p class="eyebrow">WIR SIND FÜR DICH DA</p><h2>Fragen oder ein Gedanke?</h2><p class="lead">Schreib uns in deinem Tempo. Wir melden uns persönlich zurück.</p><a class="button secondary" href="/contact">Kontakt aufnehmen</a></section>
+  </div>
+</Base>

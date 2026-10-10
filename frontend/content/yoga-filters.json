@@ -1,0 +1,52 @@
+{
+  "intensity": {
+    "enabled": true,
+    "title": "Wie viel Bewegung passt heute?",
+    "description": "Wenig oder mehr Bewegung – beides ist richtig.",
+    "options": [
+      {
+        "value": "Niedrig",
+        "label": "Wenig",
+        "description": "Ruhig und sanft.",
+        "enabled": true
+      },
+      {
+        "value": "Hoch",
+        "label": "Mehr",
+        "description": "Etwas aktiver.",
+        "enabled": true
+      }
+    ]
+  },
+  "element": {
+    "enabled": true,
+    "title": "Was tut dir gut?",
+    "description": "Wähle ein Element. Oder lass alles offen.",
+    "options": [
+      {
+        "value": "Erde",
+        "label": "Erde",
+        "description": "Halt und Ruhe.",
+        "enabled": true
+      },
+      {
+        "value": "Wasser",
+        "label": "Wasser",
+        "description": "Sanft bewegen.",
+        "enabled": true
+      },
+      {
+        "value": "Feuer",
+        "label": "Feuer",
+        "description": "Kraft und Energie.",
+        "enabled": true
+      },
+      {
+        "value": "Luft",
+        "label": "Luft",
+        "description": "Atmen und klarer werden.",
+        "enabled": true
+      }
+    ]
+  }
+}
